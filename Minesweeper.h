@@ -1,24 +1,24 @@
-#ifndef MINESWEEPER
+ï»¿#ifndef MINESWEEPER
 #define MINESWEEPER
 #include<QVector2D>
 #include "Neuralnet.h"
 #include<math.h>
 
 class Minesweeper{
-    NeuralNet Brain;//Éñ¾­ÍøÂç£¬¼´É¨À×»úµÄ´óÄÔ
-    QVector2D LookAt;//Ãæ³¯ÄÄ
-    double Rotation;//³µµÄ¸÷ÖÖ²ÎÊı
+    NeuralNet Brain;//ç¥ç»ç½‘ç»œï¼Œå³æ‰«é›·æœºçš„å¤§è„‘
+    QVector2D LookAt;//é¢æœå“ª
+    double Rotation;//è½¦çš„å„ç§å‚æ•°
     double Speed;
     double LTrack;
     double RTrack;
-    int ClosestMine;//ÀëËü×î½üµÄµØÀ×
+    int ClosestMine;//ç¦»å®ƒæœ€è¿‘çš„åœ°é›·
 public:
     Minesweeper();
     double Fitness;
-    QVector2D Position;//Î»ÖÃ
+    QVector2D Position;//ä½ç½®
     int CheckForMine(std::vector<QVector2D> mines);
     bool Update(std::vector<QVector2D> mines);
-    QVector2D GetClosestMine(std::vector<QVector2D> object);//»ñµÃ×î½üµÄµØÀ×Î»ÖÃ£¬²¢ÓÃÏòÁ¿±íÊ¾
+    QVector2D GetClosestMine(std::vector<QVector2D> object);//è·å¾—æœ€è¿‘çš„åœ°é›·ä½ç½®ï¼Œå¹¶ç”¨å‘é‡è¡¨ç¤º
     void Reset();
     void IncrementFitness(double val){Fitness+=val;}
     void PutWeights(std::vector<double> &w){Brain.PutWeights(w);}
@@ -44,12 +44,12 @@ bool Minesweeper::Update(std::vector<QVector2D> mines){
     std::vector<double> inputs;
     QVector2D ClostestMine=GetClosestMine(mines);
     ClostestMine.normalize();
-    //ÏòÉñ¾­ÍøÂçÊäÈëËÄ¸ö²ÎÊı
+    //å‘ç¥ç»ç½‘ç»œè¾“å…¥å››ä¸ªå‚æ•°
     inputs.push_back(ClostestMine.x());
     inputs.push_back(ClostestMine.y());
     inputs.push_back(LookAt.x());
     inputs.push_back(LookAt.y());
-    //»ñµÃÊä³ö£¬²¢¸´Öµµ½³µ×ÓµÄ²ÎÊı
+    //è·å¾—è¾“å‡ºï¼Œå¹¶å¤å€¼åˆ°è½¦å­çš„å‚æ•°
     std::vector<double> output=Brain.Update(inputs);
     LTrack=output[0];
     RTrack=output[1];

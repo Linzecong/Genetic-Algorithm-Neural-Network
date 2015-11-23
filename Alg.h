@@ -1,4 +1,4 @@
-#ifndef ALG
+ï»¿#ifndef ALG
 #define ALG
 #include<vector>
 #include<algorithm>
@@ -30,31 +30,31 @@ void Clamp(double &arg, double min, double max){
 }
 
 struct Genome{
-    std::vector<double> vecWeights;//»ùÒò£¬ÕâÀïÊÇÉñ¾­ÔªµÄÈ¨ÖØ
-    double Fitness;//´Ë»ùÒòµÄÊÊÓ¦ĞÔ
+    std::vector<double> vecWeights;//åŸºå› ï¼Œè¿™é‡Œæ˜¯ç¥ç»å…ƒçš„æƒé‡
+    double Fitness;//æ­¤åŸºå› çš„é€‚åº”æ€§
     Genome():Fitness(0){}
     Genome(std::vector<double> w,double f):vecWeights(w),Fitness(f){}
-    //ÅÅĞòÓÃ
+    //æ’åºç”¨
     friend bool operator<(const Genome& lhs,const Genome& rhs){
         return (lhs.Fitness<rhs.Fitness);
     }
 };
 
 class Alg{
-    std::vector<Genome> vecPop;//ÖÖÈº
-    unsigned int PopSize;//Èº´óĞ¡
-    int ChromoLength;//È¾É«Ìå³¤¶È£¨ÕâÀïÖ±½ÓµÈÓÚ»ùÒò³¤¶È£©
-    double TotalFitness;//×ÜÊÊÓ¦ĞÔ£¬ÂÖÅÌËã·¨ÓÃ
-    double BestFitness;//×î¸ßÊÊÓ¦ĞÔ
-    int FittestGenome;//×î¸ßÊÊÓ¦ĞÔ»ùÒòµÄĞòºÅ
-    double MutationRate;//Í»±ä¼¸ÂÊ
-    double CrossoverRate;//ÔÓ½»¼¸ÂÊ
-    int Generation;//´úÊı
-    void Crossover(const std::vector<double> &mum,const std::vector<double> &dad,std::vector<double> &baby1,std::vector<double> &baby2);//½»²æ»¥»»£¬¼´ÖØ×é¼¸ÂÊ
-    void Mutate(std::vector<double> &chromo);//Í»±ä¼¸ÂÊ
-    void GrabNBest(int NBest,const int NumCopies,std::vector<Genome> &myvecPop);//±£ÁôÊÊÓ¦ĞÔ×îÇ¿µÄÈ¾É«Ìå
+    std::vector<Genome> vecPop;//ç§ç¾¤
+    unsigned int PopSize;//ç¾¤å¤§å°
+    int ChromoLength;//æŸ“è‰²ä½“é•¿åº¦ï¼ˆè¿™é‡Œç›´æ¥ç­‰äºåŸºå› é•¿åº¦ï¼‰
+    double TotalFitness;//æ€»é€‚åº”æ€§ï¼Œè½®ç›˜ç®—æ³•ç”¨
+    double BestFitness;//æœ€é«˜é€‚åº”æ€§
+    int FittestGenome;//æœ€é«˜é€‚åº”æ€§åŸºå› çš„åºå·
+    double MutationRate;//çªå˜å‡ ç‡
+    double CrossoverRate;//æ‚äº¤å‡ ç‡
+    int Generation;//ä»£æ•°
+    void Crossover(const std::vector<double> &mum,const std::vector<double> &dad,std::vector<double> &baby1,std::vector<double> &baby2);//äº¤å‰äº’æ¢ï¼Œå³é‡ç»„å‡ ç‡
+    void Mutate(std::vector<double> &chromo);//çªå˜å‡ ç‡
+    void GrabNBest(int NBest,const int NumCopies,std::vector<Genome> &myvecPop);//ä¿ç•™é€‚åº”æ€§æœ€å¼ºçš„æŸ“è‰²ä½“
     void Reset();
-    Genome GetChromoRulette();//Í¨¹ıÂÖÅÌËã·¨£¬Ñ¡³öÒ»ÌõÈ¾É«Ìå
+    Genome GetChromoRulette();//é€šè¿‡è½®ç›˜ç®—æ³•ï¼Œé€‰å‡ºä¸€æ¡æŸ“è‰²ä½“
 public:
     Alg(int popsize,double MutRat,double CrossRat,int numweights);
     std::vector<Genome>	Epoch(std::vector<Genome> &old_pop);
@@ -62,13 +62,13 @@ public:
 };
 
 void Alg::Crossover(const std::vector<double> &mum, const std::vector<double> &dad, std::vector<double> &baby1, std::vector<double> &baby2){
-    //Ã»ÓĞ·¢Éú»ùÒòÖØ×é£¬ÄÇÃ´Ö±½Ó·µ»ØË«Ç×
+    //æ²¡æœ‰å‘ç”ŸåŸºå› é‡ç»„ï¼Œé‚£ä¹ˆç›´æ¥è¿”å›åŒäº²
     if((RandFloat()>CrossoverRate)||(mum==dad)){
         baby1 = mum;
         baby2 = dad;
         return;
     }
-    //Ëæ»úÑ¡È¡Ò»¶Î½øĞĞ»¥»»
+    //éšæœºé€‰å–ä¸€æ®µè¿›è¡Œäº’æ¢
     int cp=RandInt(0,ChromoLength-1);
     for(int i=0;i<cp;i++){
         baby1.push_back(mum[i]);
@@ -81,7 +81,7 @@ void Alg::Crossover(const std::vector<double> &mum, const std::vector<double> &d
 }
 
 void Alg::Mutate(std::vector<double> &chromo){
-    //¶ÔÃ¿Ò»¸ö»ùÒò½øĞĞÒ»¶¨¸ÅÂÊµÄÍ»±ä£¬¸Ä±àÈ¨ÖØ
+    //å¯¹æ¯ä¸€ä¸ªåŸºå› è¿›è¡Œä¸€å®šæ¦‚ç‡çš„çªå˜ï¼Œæ”¹ç¼–æƒé‡
     for(unsigned int i=0;i<chromo.size();i++)
         if(RandFloat()<0.1)
             chromo[i]+=(RandomClamped()*0.3);
@@ -102,8 +102,8 @@ Genome Alg::GetChromoRulette(){
 }
 
 void Alg::GrabNBest(int NBest, const int NumCopies, std::vector<Genome> &myvecPop){
-    //NBestÎª¾«Ó¢ÊıÁ¿
-    //CopiesÎªÎª¾«Ó¢¸´ÖÆµÄÊıÁ¿
+    //NBestä¸ºç²¾è‹±æ•°é‡
+    //Copiesä¸ºä¸ºç²¾è‹±å¤åˆ¶çš„æ•°é‡
     while(NBest--)
         for(int i=0;i<NumCopies;i++)
             myvecPop.push_back(vecPop[(PopSize-1)-NBest]);
@@ -127,14 +127,14 @@ Alg::Alg(int popsize, double MutRat, double CrossRat, int numweights){
     for(unsigned int i=0;i<PopSize;i++){
         vecPop.push_back(Genome());
         for(int j=0;j<ChromoLength;j++)
-            vecPop[i].vecWeights.push_back(RandomClamped());//¸³ÓèËæ»úÈ¨ÖØ
+            vecPop[i].vecWeights.push_back(RandomClamped());//èµ‹äºˆéšæœºæƒé‡
     }
 }
 
 std::vector<Genome> Alg::Epoch(std::vector<Genome> &old_pop){
     vecPop=old_pop;
     Reset();
-    std::sort(vecPop.begin(),vecPop.end());//ÅÅĞò£¬Ñ¡¾«Ó¢
+    std::sort(vecPop.begin(),vecPop.end());//æ’åºï¼Œé€‰ç²¾è‹±
     std::vector<Genome> vecNewPop;
     GrabNBest(NUM_ELITE,NUM_ELITE_COPY,vecNewPop);
     while(vecNewPop.size()<PopSize){

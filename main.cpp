@@ -1,4 +1,4 @@
-#define POPSIZE 30
+﻿#define POPSIZE 30
 #define MUTRAT 0.1
 #define CROSSRAT 0.7
 #define NUM_MINE 100

@@ -1,11 +1,11 @@
-#ifndef CONTROLLER
+ï»¿#ifndef CONTROLLER
 #define CONTROLLER
 #include<vector>
 #include "Alg.h"
 #include "Minesweeper.h"
 
 class Controller{
-    std::vector<Genome> vecThePopulation;//ÖÖÈº
+    std::vector<Genome> vecThePopulation;//ç§ç¾¤
     int NumSweepers;
     int NumWeightsInNN;
     Alg* MyAlg;
@@ -14,31 +14,31 @@ public:
     Controller();
     std::vector<Minesweeper> vecSweepers;
     std::vector<std::vector<QVector2D> > vecMinesList;
-    bool Update();//ÏÂÒ»´ú
-    int GetFitest();//»ñÈ¡×îÓÅ¸öÌå
+    bool Update();//ä¸‹ä¸€ä»£
+    int GetFitest();//è·å–æœ€ä¼˜ä¸ªä½“
     int Generations;
     int NumMines;
 };
 
 Controller::Controller(){
-    //³õÊ¼»¯
+    //åˆå§‹åŒ–
     MovedTime=0;
     NumSweepers=POPSIZE;
     NumMines=NUM_MINE;
     Generations=0;
-    //ĞÂ½¨É¨À×»ú
+    //æ–°å»ºæ‰«é›·æœº
     for(int i=0;i<NumSweepers;i++)
         vecSweepers.push_back(Minesweeper());
-    //Éñ¾­Ôª×ÜÊı
+    //ç¥ç»å…ƒæ€»æ•°
     NumWeightsInNN=vecSweepers[0].GetNumberOfWeights();
-    //°ÑÈ¨ÖØµ±³É»ùÒò£¬´«µİ¸øÒÅ´«Ëã·¨
+    //æŠŠæƒé‡å½“æˆåŸºå› ï¼Œä¼ é€’ç»™é—ä¼ ç®—æ³•
     MyAlg=new Alg(NumSweepers,MUTRAT,CROSSRAT,NumWeightsInNN);
-    //»ñÈ¡ÖÖÈº
+    //è·å–ç§ç¾¤
     vecThePopulation=MyAlg->GetChromos();
-    //°ÑÒÅ´«Ëã·¨Éú³ÉµÄÈ¨ÖØ¸´ÖÆµ½É¨À×»úµÄÉñ¾­ÔªÉÏ
+    //æŠŠé—ä¼ ç®—æ³•ç”Ÿæˆçš„æƒé‡å¤åˆ¶åˆ°æ‰«é›·æœºçš„ç¥ç»å…ƒä¸Š
     for(int i=0;i<NumSweepers;i++)
         vecSweepers[i].PutWeights(vecThePopulation[i].vecWeights);
-    //³õÊ¼»¯µØÀ×±í
+    //åˆå§‹åŒ–åœ°é›·è¡¨
     for(int i=0;i<NumSweepers;i++){
         std::vector<QVector2D> temp;
         for(int i=0;i<NumMines;i++){
@@ -49,11 +49,11 @@ Controller::Controller(){
 }
 
 bool Controller::Update(){
-    //ÏÈĞĞ¶¯GENERATION_STEP´ÎÅĞ¶ÏÄÄÒ»¸öÊÇ×îÓÅ£¬ºóÉú³ÉÏÂÒ»´ú
+    //å…ˆè¡ŒåŠ¨GENERATION_STEPæ¬¡åˆ¤æ–­å“ªä¸€ä¸ªæ˜¯æœ€ä¼˜ï¼Œåç”Ÿæˆä¸‹ä¸€ä»£
     if(MovedTime<GENERATION_STEP){
         for(int i=0;i<NumSweepers;i++){
-            vecSweepers[i].Update(vecMinesList[i]);//Í¨¹ıÉñ¾­ÍøÂç¸üĞÂÎ»ÖÃ
-            int GrabHit=vecSweepers[i].CheckForMine(vecMinesList[i]);//Èç¹û³Ôµ½µØÀ×£¬Ôò¸üĞÂÊÊÓ¦ĞÔ
+            vecSweepers[i].Update(vecMinesList[i]);//é€šè¿‡ç¥ç»ç½‘ç»œæ›´æ–°ä½ç½®
+            int GrabHit=vecSweepers[i].CheckForMine(vecMinesList[i]);//å¦‚æœåƒåˆ°åœ°é›·ï¼Œåˆ™æ›´æ–°é€‚åº”æ€§
             if(GrabHit>=0){
                 vecSweepers[i].IncrementFitness(1);
                 vecMinesList[i][GrabHit]=QVector2D(RandFloat()*(WIDTH-10)+10,RandFloat()*(WIDTH-10)+10);
@@ -65,8 +65,8 @@ bool Controller::Update(){
     else{
         MovedTime=0;
         Generations++;
-        vecThePopulation=MyAlg->Epoch(vecThePopulation);//Éú³ÉÏÂÒ»´ú
-        for(int i=0;i<NumSweepers;i++)//¸üĞÂÉ¨À×»úµÄÄÔ´ü
+        vecThePopulation=MyAlg->Epoch(vecThePopulation);//ç”Ÿæˆä¸‹ä¸€ä»£
+        for(int i=0;i<NumSweepers;i++)//æ›´æ–°æ‰«é›·æœºçš„è„‘è¢‹
             vecSweepers[i].PutWeights(vecThePopulation[i].vecWeights);
     }
     return true;

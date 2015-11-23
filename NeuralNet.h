@@ -1,45 +1,45 @@
-#ifndef NEURALNET
+ï»¿#ifndef NEURALNET
 #define NEURALNET
 #include<vector>
 #include <stdlib.h>
 #include <math.h>
 #include"Alg.h"
 
-//Éñ¾­Ôª
+//ç¥ç»å…ƒ
 struct Neuron{
-    int NumInputs;//Ã¿¸öÉñ¾­ÔªµÄÊäÈëÊıÁ¿
-    std::vector<double> vecWeight;//Ã¿¸öÊäÈëµÄÈ¨ÖØ
+    int NumInputs;//æ¯ä¸ªç¥ç»å…ƒçš„è¾“å…¥æ•°é‡
+    std::vector<double> vecWeight;//æ¯ä¸ªè¾“å…¥çš„æƒé‡
     Neuron(int Inputs):NumInputs(Inputs){
         for(int i=0;i<Inputs+1;i++)
-            vecWeight.push_back(RandomClamped());//Ëæ»úÉú³ÉÈ¨ÖØ
+            vecWeight.push_back(RandomClamped());//éšæœºç”Ÿæˆæƒé‡
     }
 };
 
-//Éñ¾­²ã
+//ç¥ç»å±‚
 struct NeuronLayer{
-    int NumNeurons;//Ã¿²ãÓµÓĞµÄÉñ¾­ÔªÊıÁ¿
-    std::vector<Neuron> vecNeurons;//´¢´æÉñ¾­Ôª
+    int NumNeurons;//æ¯å±‚æ‹¥æœ‰çš„ç¥ç»å…ƒæ•°é‡
+    std::vector<Neuron> vecNeurons;//å‚¨å­˜ç¥ç»å…ƒ
     NeuronLayer(int NeuronNum,int NeuronInputNum):NumNeurons(NeuronNum){
         for(int i=0;i<NeuronNum;i++)
             vecNeurons.push_back(Neuron(NeuronInputNum));
     }
 };
 
-//Éñ¾­ÍøÂç
+//ç¥ç»ç½‘ç»œ
 class NeuralNet{
-    unsigned int NumInputs;//ÊäÈëÊıÁ¿
-    int NumOutputs;//Êä³öÊıÁ¿
-    int NumHiddenLayers;//Òş²Ø²ãÊıÁ¿
-    int NeuronsPerHiddenLayer;//Ã¿¸öÒş²Ø²ãÓµÓĞµÄÉñ¾­ÔªÊıÁ¿
-    std::vector<NeuronLayer> vecLayers;//²ãÊı
+    unsigned int NumInputs;//è¾“å…¥æ•°é‡
+    int NumOutputs;//è¾“å‡ºæ•°é‡
+    int NumHiddenLayers;//éšè—å±‚æ•°é‡
+    int NeuronsPerHiddenLayer;//æ¯ä¸ªéšè—å±‚æ‹¥æœ‰çš„ç¥ç»å…ƒæ•°é‡
+    std::vector<NeuronLayer> vecLayers;//å±‚æ•°
 public:
     NeuralNet();
     void CreateNet();
-    std::vector<double> GetWeights()const;//»ñÈ¡Éñ¾­ÍøÂçÖĞËùÓĞÉñ¾­ÔªµÄÈ¨ÖØ
-    int GetNumberOfWeights()const;//»ñÈ¡Éñ¾­ÍøÂçÖĞËùÓĞÈ¨ÖØµÄÊıÁ¿
-    void PutWeights(std::vector<double> &weights);//¸üĞÂÈ¨ÖØ
-    inline double Sigmoid(double activation,double response);//¼¤»îº¯Êı
-    std::vector<double> Update(std::vector<double> &inputs);//Í¨¹ıÊäÈë»ñµÃÊä³ö
+    std::vector<double> GetWeights()const;//è·å–ç¥ç»ç½‘ç»œä¸­æ‰€æœ‰ç¥ç»å…ƒçš„æƒé‡
+    int GetNumberOfWeights()const;//è·å–ç¥ç»ç½‘ç»œä¸­æ‰€æœ‰æƒé‡çš„æ•°é‡
+    void PutWeights(std::vector<double> &weights);//æ›´æ–°æƒé‡
+    inline double Sigmoid(double activation,double response);//æ¿€æ´»å‡½æ•°
+    std::vector<double> Update(std::vector<double> &inputs);//é€šè¿‡è¾“å…¥è·å¾—è¾“å‡º
 };
 
 NeuralNet::NeuralNet(){
@@ -52,16 +52,16 @@ NeuralNet::NeuralNet(){
 }
 
 void NeuralNet::CreateNet(){
-    //³õÊ¼»¯Òş²Ø²ã
+    //åˆå§‹åŒ–éšè—å±‚
     if(NumHiddenLayers>0){
         vecLayers.push_back(NeuronLayer(NeuronsPerHiddenLayer,NumInputs));
         for(int i=0;i<NumHiddenLayers-1;i++)
             vecLayers.push_back(NeuronLayer(NeuronsPerHiddenLayer,NeuronsPerHiddenLayer));
-        //³õÊ¼»¯Êä³ö²ã
+        //åˆå§‹åŒ–è¾“å‡ºå±‚
         vecLayers.push_back(NeuronLayer(NumOutputs,NeuronsPerHiddenLayer));
     }
     else{
-        //Èç¹ûÃ»ÓĞÒş²Ø²ãÔòÖ»³õÊ¼»¯Ò»¸öÊä³ö²ã
+        //å¦‚æœæ²¡æœ‰éšè—å±‚åˆ™åªåˆå§‹åŒ–ä¸€ä¸ªè¾“å‡ºå±‚
         vecLayers.push_back(NeuronLayer(NumOutputs,NumInputs));
     }
 }
@@ -101,7 +101,7 @@ double NeuralNet::Sigmoid(double activation, double response){
 std::vector<double> NeuralNet::Update(std::vector<double> &inputs){
     std::vector<double> outputs;
     int Weight=0;
-    if(inputs.size()!=NumInputs)//·ÀÖ¹³ö´í
+    if(inputs.size()!=NumInputs)//é˜²æ­¢å‡ºé”™
         return outputs;
     for(int i=0;i<NumHiddenLayers+1;i++){
         if(i>0)
@@ -113,8 +113,8 @@ std::vector<double> NeuralNet::Update(std::vector<double> &inputs){
             int tempNumInputs=vecLayers[i].vecNeurons[j].NumInputs;
             for(int k=0;k<tempNumInputs-1;k++)
                 netinput+=vecLayers[i].vecNeurons[j].vecWeight[k]*inputs[Weight++];
-            netinput+=vecLayers[i].vecNeurons[j].vecWeight[tempNumInputs-1]*(-1);//µ÷Õû²ÎÊı
-            outputs.push_back(Sigmoid(netinput,1));//»ñµÃÒ»¸öÊä³ö£¬¿ÉÒÔÓÃ¸÷ÖÖ²»Í¬º¯Êı
+            netinput+=vecLayers[i].vecNeurons[j].vecWeight[tempNumInputs-1]*(-1);//è°ƒæ•´å‚æ•°
+            outputs.push_back(Sigmoid(netinput,1));//è·å¾—ä¸€ä¸ªè¾“å‡ºï¼Œå¯ä»¥ç”¨å„ç§ä¸åŒå‡½æ•°
             Weight=0;
         }
     }
